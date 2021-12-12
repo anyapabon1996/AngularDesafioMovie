@@ -1,0 +1,64 @@
+section{
+
+  form{
+
+    div{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      margin: 2rem auto;
+
+      input{
+        width: 25rem;
+        margin-right: 2rem;
+      }
+
+      span{
+        display: inline-block;
+        height: 2rem;
+        width: 10rem;
+        border-radius: 10rem;
+        border: 1px solid blue;
+        text-align: center;
+        background-color: rgb(139, 139, 231);
+      }
+    }
+  }
+
+  .movie-card{
+
+    margin-bottom: 2rem;
+
+    .card-body{
+      padding: none;
+    }
+
+    .cartBtnCintainer{
+
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+
+      .cartBtn{
+        text-align: center;
+        border: 1px solid;
+        border-radius: 10rem;
+        width: 7rem;
+        height: 2rem;
+      }
+
+      .cartBtn:hover {
+        background-color: rgb(107, 107, 180);
+      }
+    }
+
+
+    .btn-movie{
+      margin-bottom: 1rem;
+    }
+  }
+
+
+}
+

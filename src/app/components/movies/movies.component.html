@@ -1,0 +1,33 @@
+<section class="row d-flex justify-content-evenly all-images">
+
+  <form [formGroup]="lookMovieForm">
+
+    <div class="form-group">
+
+      <input type="text" data-lookFor placeholder="Look for an specific movie" class="form-control" id="lookingMovie" formControlName="movieName">
+
+      <span (click)="lookMovie()">Look Specific movie</span>
+
+    </div>
+
+  </form>
+
+  <div class="card movie-card" style="width: 15rem;" *ngFor="let movie of allMovie" >
+
+    <img [src]="movie.image" class="card-img-top animales-img" [alt]="movie.title">
+    <div class="card-body">
+      <h5 class="card-title text-center">{{movie.title}}</h5>
+      <p class="card-text text-center">Qualification: {{movie.qualification}}/5</p>
+    </div>
+
+
+    <div class="cartBtnCintainer">
+      <div class="cartBtn" (click)="addToCart(movie.id)">Add to Cart</div>
+    </div>
+
+
+    <button class="btn btn-primary btn-movie" (click)="getInfo(movie.id)">Info</button>
+
+  </div>
+
+</section>
