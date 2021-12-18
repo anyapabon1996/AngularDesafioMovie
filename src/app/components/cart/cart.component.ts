@@ -14,23 +14,23 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
     //Inyectamos el servicio de carrito
     private cartService : CartService,
 
-    //Inyectamos la suscripcion
-    //private subscriptions: Subscription,
   ) { }
+
+  //Inyectamos la suscripcion. IMPORTANTE, NO VA EN EL CONTRUCTOR
+  private subscriptions?: Subscription | undefined;
 
   //Usamos un carro vacio para todos los productos en el carro
   allMoviesInCar? : ICart[] = [];
 
   ngOnInit(): void {
     //Le pasamos todas las pelis que tenemos guardadas, con la suscripcion
-    // this.subscriptions =
-    this.cartService.getFromCar().subscribe(movie => this.allMoviesInCar = movie);
+    this.subscriptions = this.cartService.getFromCar().subscribe(movie => this.allMoviesInCar = movie);
   }
 
   // Esto se va a ejecutar cuando yo me vaya de esta ruta
   ngOnDestroy(): void {
     //Me desuscribo
-    //this.subscriptions.unsubscribe();
+    this.subscriptions?.unsubscribe();
 
     console.log('Se ejecuta al salir del componente de cart')
   }
@@ -41,11 +41,11 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
 
   //Elimina un objeto particular
   deleteMovie(id : Number){
-    this.cartService.deleteMovie(id).subscribe(m => this.allMoviesInCar = m);
+    this.subscriptions?.add(this.cartService.deleteMovie(id).subscribe(m => this.allMoviesInCar = m));
   }
 
   //Elimnamos todo del carrito
   removeAll() {
-    this.cartService.clerCar().subscribe(m => this.allMoviesInCar = m);
+    this.subscriptions?.add(this.cartService.clerCar().subscribe(m => this.allMoviesInCar = m));
   }
 }
