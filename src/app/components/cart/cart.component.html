@@ -1,1 +1,18 @@
-<p>cart works!</p>
+<section class="row d-flex justify-content-evenly all-images">
+
+  <div class="card movie-card" style="width: 15rem;" *ngFor="let movie of allMoviesInCar" >
+
+    <img [src]="movie.image" class="card-img-top" [alt]="movie.title">
+    <div class="card-body">
+      <h5 class="card-title text-center">{{movie.title}}</h5>
+    </div>
+
+    <button class="btn btn-primary btn-movie" (click)="deleteMovie(movie.movieId)">Remove</button>
+
+  </div>
+
+  <div class="remove">
+    <button class="btn btn-primary btn-remove" (click)="removeAll()">Remove all</button>
+  </div>
+
+</section>

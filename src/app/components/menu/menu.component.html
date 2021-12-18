@@ -1,0 +1,22 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+
+    <!-- NOTAR QUE SE LE QUITA EL HREF EN ANGULAR -->
+    <a class="navbar-brand" routerLink="/">Movie Rental</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+
+      <!-- NOTAR QUE LE QUITAMOS EL HREF A LAS A, Y ADEMAS, ROUTERLINK ES ACTIVE, Q LE DICE Q SI ESTA EN ESA PAGINA, ESTE SUBRAYADO -->
+      <div class="navbar-nav">
+        <!-- routerLink es quien le dice la ruta cual será, q es el path que esta el app-routing, pero ahora, al hacerle click, y no el url -->
+        <a class="nav-link" routerLinkActive="active" routerLink="movies" >Movies</a>
+        <a class="nav-link" routerLinkActive="active" routerLink="myAccount">Login</a>
+        <a class="nav-link" routerLinkActive="active" routerLink="register">Register</a>
+        <a class="nav-link" routerLinkActive="active" routerLink="cart">My Cart</a>
+      </div>
+    </div>
+  </div>
+</nav>

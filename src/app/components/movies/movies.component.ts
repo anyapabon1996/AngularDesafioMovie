@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ICart } from 'src/app/models/cart.model';
 import { IMovie } from 'src/app/models/movie.model';
+import { CartService } from 'src/app/services/cart.service';
 import { MovieService } from 'src/app/services/movie.service';
 
 @Component({
@@ -12,12 +14,17 @@ import { MovieService } from 'src/app/services/movie.service';
 export class MoviesComponent implements OnInit {
 
   //Instanciamos una variable para accedr a los servicios
-  constructor(private movieService :MovieService) { }
+  constructor(
+    private movieService :MovieService,
+
+    //Inyectamos el servicio de router
+    private router : Router,
+
+    private cartService : CartService,
+    ) { }
 
   //Instanciamos un array para guardar todas las pelis del mock
   allMovie: IMovie[] = [];
-
-  moviesInCart :ICart[] = [];
 
   //formulario para buscar pelicula
   lookMovieForm = new FormGroup ({
@@ -25,8 +32,9 @@ export class MoviesComponent implements OnInit {
   })
 
   //variable control
-  flag :boolean = false;
+  //flag :boolean = false;
 
+  //Variable para buscar una pelicula
   movieName :string = '';
 
   ngOnInit(): void {
@@ -34,11 +42,9 @@ export class MoviesComponent implements OnInit {
     this.movieService.getMovies().subscribe(movie => this.allMovie = movie);
   }
 
-  //imrpimimos la info
+  //Al darle click en la info, vamos a redirigirnos al componente de la informacion
   getInfo(id :number){
-
-    console.log(this.allMovie[id].description);
-
+    this.router.navigate(['info', id]);
   }
 
   //Funcion que devuelve el objeto de la pelicula buscada
@@ -60,32 +66,36 @@ export class MoviesComponent implements OnInit {
 
   //Función para agregar al carrito.
   addToCart(id :number){
-    //Nos aseguramos que la peli no este ya agregada
-    if (this.moviesInCart.length != 0) {
-      this.index = this.moviesInCart.findIndex(movieInto => movieInto.movieId == id);
-    } else this.index = -1;
 
-    if (this.index == -1) {
-      //Buscamos la peli en el array de pelis
-      this.index = this.allMovie.findIndex(movie =>
-        movie.id == id
-      );
+    this.cartService.addMovie(id);
 
-      if (this.index != -1) {
-        //Llamamos al servicio
-        this.movieService.addMoviestoCart(this.allMovie[this.index]).subscribe(moviesFromService => {
-          this.moviesInCart = moviesFromService;
-        });
+    // this.router.navigate(['cart', id]);
 
-        //Le imprimimos por consola todas las peliculas que tiene
-        this.moviesInCart.forEach(movie => console.log(movie));
+    // //Nos aseguramos que la peli no este ya agregada
+    // if (this.moviesInCart.length != 0) {
+    //   this.index = this.moviesInCart.findIndex(movieInto => movieInto.movieId == id);
+    // } else this.index = -1;
 
-        console.log(this.moviesInCart.length);
+    // if (this.index == -1) {
+    //   //Buscamos la peli en el array de pelis
+    //   this.index = this.allMovie.findIndex(movie =>
+    //     movie.id == id
+    //   );
 
-        //si no se cumple la busqueda
-      } else console.log('Search Error');
+    //   if (this.index != -1) {
+    //     //Llamamos al servicio
+    //     this.movieService.addMoviestoCart(this.allMovie[this.index]).subscribe(moviesFromService => {
+    //       this.moviesInCart = moviesFromService;
+    //     });
 
-    } else console.log('You already have rented this movie')
+    //     //Le imprimimos por consola todas las peliculas que tiene
+    //     this.moviesInCart.forEach(movie => console.log(movie));
 
+    //     console.log(this.moviesInCart.length);
+
+    //     //si no se cumple la busqueda
+    //   } else console.log('Search Error');
+
+    // } else console.log('You already have rented this movie')
   }
 }

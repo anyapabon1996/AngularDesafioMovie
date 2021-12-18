@@ -14,28 +14,29 @@ export class MovieService {
 
   //Inicializamos un carrito de peliculas
   rentalMovie :ICart[] = [];
-
-  //Iniciamos una variable vacia de carrto
-  cartMovie :ICart = {
-    movieId: 0,
-    title: ''
-  }
+  uniqueMovie : IMovie | undefined;
 
   //Esto nos devuelve todas las pelis de stock
   getMovies(): Observable<IMovie[]>{
     return of(moviesMock);
   }
 
-  //Esto agrega una peli al carrito del usuario
-  addMoviestoCart(movie :IMovie): Observable<ICart[]>{
+  //Busca la pelicula por id
+  getMovieById(id : Number): Observable<IMovie | undefined> {
 
-    this.cartMovie.movieId = movie.id;
-    this.cartMovie.title = movie.title;
-
-    this.rentalMovie.push(this.cartMovie);
-
-    return of(this.rentalMovie);
+    return of(moviesMock.find(movies => movies.id === id));
   }
+
+  //Esto agrega una peli al carrito del usuario
+  // addMoviestoCart(movie :IMovie): Observable<ICart[]>{
+
+  //   this.cartMovie.movieId = movie.id;
+  //   this.cartMovie.title = movie.title;
+
+  //   this.rentalMovie.push(this.cartMovie);
+
+  //   return of(this.rentalMovie);
+  // }
 
   constructor() { }
 }

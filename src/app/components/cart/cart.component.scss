@@ -1,0 +1,19 @@
+section {
+
+  .card{
+    margin-bottom: 3rem;
+  }
+
+  .remove{
+    display: flex;
+    justify-content: center;
+
+    .btn-remove {
+      margin-top: 2rem;
+      width: 10rem;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+}

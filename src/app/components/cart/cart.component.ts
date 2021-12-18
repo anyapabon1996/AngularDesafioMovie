@@ -1,26 +1,51 @@
-import { Component, OnInit } from '@angular/core';
-import { NumericLiteral } from 'typescript';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { ICart } from 'src/app/models/cart.model';
+import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss']
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  constructor() { }
+  constructor(
+    //Inyectamos el servicio de carrito
+    private cartService : CartService,
+
+    //Inyectamos la suscripcion
+    //private subscriptions: Subscription,
+  ) { }
+
+  //Usamos un carro vacio para todos los productos en el carro
+  allMoviesInCar? : ICart[] = [];
 
   ngOnInit(): void {
+    //Le pasamos todas las pelis que tenemos guardadas, con la suscripcion
+    // this.subscriptions =
+    this.cartService.getFromCar().subscribe(movie => this.allMoviesInCar = movie);
   }
 
-  //metodo que elimina del carrito
-  deleteMovie(id :NumericLiteral) {
+  // Esto se va a ejecutar cuando yo me vaya de esta ruta
+  ngOnDestroy(): void {
+    //Me desuscribo
+    //this.subscriptions.unsubscribe();
 
+    console.log('Se ejecuta al salir del componente de cart')
   }
 
-  //Metodo que borra todo del carrito
-  clearCart(){
-
+  ngAfterViewInit(): void {
+      console.log('Se ejecuta despues de haber cargado la vista del componente')
   }
 
+  //Elimina un objeto particular
+  deleteMovie(id : Number){
+    this.cartService.deleteMovie(id).subscribe(m => this.allMoviesInCar = m);
+  }
+
+  //Elimnamos todo del carrito
+  removeAll() {
+    this.cartService.clerCar().subscribe(m => this.allMoviesInCar = m);
+  }
 }
