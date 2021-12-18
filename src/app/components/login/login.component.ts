@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { IUser } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user.service';
 
@@ -8,7 +9,7 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   //Instanciamos un objeto de tipo register
   constructor(private userService: UserService) { }
@@ -22,13 +23,20 @@ export class LoginComponent implements OnInit {
   //   password: ''
   // };
 
+  //Suscripcion
+  private subscription : Subscription | undefined;
+
   allUsers: IUser[] = [];
 
   ngOnInit(): void {
 
     //Le pasamos todos los datos que tenemos en la "API"
-   this.userService.getUsers().subscribe(user => this.allUsers = user);
+   this.subscription = this.userService.getUsers().subscribe(user => this.allUsers = user);
 
+  }
+
+  ngOnDestroy(): void {
+      this.subscription?.unsubscribe();
   }
 
   //Formulario del frontEnd

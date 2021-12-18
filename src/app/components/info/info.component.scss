@@ -1,0 +1,15 @@
+.container-info{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 3rem;
+
+  .img-container{
+    text-align: center;
+  }
+
+  .summary-container {
+    text-align: center;
+    margin: 1rem;
+  }
+}

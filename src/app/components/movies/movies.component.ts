@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscriber, Subscription } from 'rxjs';
 import { ICart } from 'src/app/models/cart.model';
 import { IMovie } from 'src/app/models/movie.model';
 import { CartService } from 'src/app/services/cart.service';
@@ -11,7 +12,7 @@ import { MovieService } from 'src/app/services/movie.service';
   templateUrl: './movies.component.html',
   styleUrls: ['./movies.component.scss']
 })
-export class MoviesComponent implements OnInit {
+export class MoviesComponent implements OnInit, OnDestroy {
 
   //Instanciamos una variable para accedr a los servicios
   constructor(
@@ -22,6 +23,9 @@ export class MoviesComponent implements OnInit {
 
     private cartService : CartService,
     ) { }
+
+  //Suscripcion
+  private subscription : Subscription | undefined;
 
   //Instanciamos un array para guardar todas las pelis del mock
   allMovie: IMovie[] = [];
@@ -39,7 +43,12 @@ export class MoviesComponent implements OnInit {
 
   ngOnInit(): void {
     //Pasamos todos las pelis del mock al array
-    this.movieService.getMovies().subscribe(movie => this.allMovie = movie);
+    this.subscription =  this.movieService.getMovies().subscribe(movie => this.allMovie = movie);
+  }
+
+  ngOnDestroy(): void {
+    //Nos desuscribimos
+    this.subscription?.unsubscribe();
   }
 
   //Al darle click en la info, vamos a redirigirnos al componente de la informacion
@@ -67,6 +76,10 @@ export class MoviesComponent implements OnInit {
   //Función para agregar al carrito.
   addToCart(id :number){
 
+    //Esta función no sé cómo meterla dentro del subscription
+    // this.subscription?.add(this.cartService.addMovie(id));
+
+    //Así sí agarra
     this.cartService.addMovie(id);
 
     // this.router.navigate(['cart', id]);

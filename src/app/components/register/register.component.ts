@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { IUser } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user.service';
 
@@ -8,7 +9,7 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy{
 
   //Control sobre el formulario de registro
   userForm = new FormGroup({
@@ -34,13 +35,21 @@ export class RegisterComponent implements OnInit {
   //Instanciamos una variable de tipo UserService
   constructor(private userService: UserService) { }
 
+  //Suscripcion
+  private subscription : Subscription | undefined;
+
   //Array con todos los usuarios.
   allUsers :IUser[] = [];
 
 
   ngOnInit(): void {
     //Le pasamos todos los datos que tenemos en la BB.DD para continuar
-    this.userService.getUsers().subscribe(user => {this.allUsers = user});
+    this.subscription = this.userService.getUsers().subscribe(user => {this.allUsers = user});
+  }
+
+  ngOnDestroy(): void {
+      //Nos desuscribimos
+      this.subscription?.unsubscribe();
   }
 
   //Funcion al registrar un usuario
