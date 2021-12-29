@@ -14,6 +14,13 @@
 
   <div class="card movie-card" style="width: 15rem;" *ngFor="let movie of allMovie" >
 
+       <!-- Button to delete an specific movie from cart -->
+       <div class="button-container">
+        <button mat-fab color="primary" (click)="deleteMovie(movie.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+
     <img [src]="movie.image" class="card-img-top animales-img" [alt]="movie.title">
     <div class="card-body">
       <h5 class="card-title text-center">{{movie.title}}</h5>
@@ -25,9 +32,125 @@
       <div class="cartBtn" (click)="addToCart(movie.id)">Add to Cart</div>
     </div>
 
-
     <button class="btn btn-primary btn-movie" (click)="getInfo(movie.id)">Info</button>
 
   </div>
 
 </section>
+
+<section class="edit">
+
+  <h2 class="subtitle-update text-center">Update An Specific Movie</h2>
+
+  <form [formGroup]="updateMovieForm">
+
+    <div class="form-group mb-3 update">
+      <input type="number" aria-label="id" class="form-control" placeholder="Movie's id" formControlName="id">
+    </div>
+
+    <!-- Validación -->
+      <div *ngIf="updateMovieForm.controls['id'].invalid && (updateMovieForm.controls['id'].dirty || updateMovieForm.controls['id'].touched)" class="alert alert-danger">
+      <div *ngIf="updateMovieForm.controls['id'].hasError('required')">id is required</div>
+    </div>
+
+    <div class="form-group mb-3">
+      <input type="text" aria-label="title" class="form-control" placeholder="New title" formControlName="title">
+    </div>
+
+    <div class="form-group mb-3">
+      <input type="number" aria-label="premiere" class="form-control" placeholder="Premiere" formControlName="premiere">
+    </div>
+
+    <div class="form-group mb-3">
+      <input type="text" aria-label="image" class="form-control" placeholder="image url" formControlName="image">
+    </div>
+
+    <div class="form-group mb-3">
+      <input type="number" aria-label="qualification" class="form-control" placeholder="Qualification" formControlName="qualification">
+    </div>
+
+    <div class="form-group mb-3">
+      <input type="text" aria-label="description" class="form-control" placeholder="Description" formControlName="description">
+    </div>
+
+    <div class="form-group mb-3">
+      <input type="type" aria-label="type" class="form-control" placeholder="Gender" formControlName="type">
+    </div>
+
+    <div class="btn-update">
+      <button type="submit" class="btn btn-primary" (click)="updateMovie()" [disabled]="updateMovieForm.invalid">Update Movie</button>
+    </div>
+
+  </form>
+
+</section>
+
+
+<section class="create">
+
+  <h2 class="subtitle-create text-center">Add a new Movie</h2>
+
+  <form [formGroup]="createMovieForm">
+
+    <div class="form-group mb-3">
+      <input type="text" aria-label="title" class="form-control" placeholder="New title" formControlName="title">
+    </div>
+
+    <!-- Validación -->
+    <div *ngIf="createMovieForm.controls['title'].invalid && (createMovieForm.controls['title'].dirty || createMovieForm.controls['title'].touched)" class="alert alert-danger">
+      <div *ngIf="createMovieForm.controls['title'].hasError('required')">Title is required</div>
+    </div>
+
+    <div class="form-group mb-3">
+      <input type="number" aria-label="premiere" class="form-control" placeholder="Premiere" formControlName="premiere">
+    </div>
+
+    <!-- Validación -->
+    <div *ngIf="createMovieForm.controls['premiere'].invalid && (createMovieForm.controls['premiere'].dirty || createMovieForm.controls['premiere'].touched)" class="alert alert-danger">
+      <div *ngIf="createMovieForm.controls['premiere'].hasError('required')">Premiere is required</div>
+    </div>
+
+    <div class="form-group mb-3">
+      <input type="text" aria-label="image" class="form-control" placeholder="image url" formControlName="image">
+    </div>
+
+    <!-- Validación -->
+    <div *ngIf="createMovieForm.controls['image'].invalid && (createMovieForm.controls['image'].dirty || createMovieForm.controls['image'].touched)" class="alert alert-danger">
+      <div *ngIf="createMovieForm.controls['image'].hasError('required')">URL image is required</div>
+    </div>
+
+    <div class="form-group mb-3">
+      <input type="number" aria-label="qualification" class="form-control" placeholder="Qualification" formControlName="qualification">
+    </div>
+
+    <!-- Validación -->
+    <div *ngIf="createMovieForm.controls['qualification'].invalid && (createMovieForm.controls['qualification'].dirty || createMovieForm.controls['qualification'].touched)" class="alert alert-danger">
+      <div *ngIf="createMovieForm.controls['qualification'].hasError('required')">Qualification is required</div>
+    </div>
+
+    <div class="form-group mb-3">
+      <input type="text" aria-label="description" class="form-control" placeholder="Description" formControlName="description">
+    </div>
+
+    <!-- Validación -->
+    <div *ngIf="createMovieForm.controls['description'].invalid && (createMovieForm.controls['description'].dirty || createMovieForm.controls['description'].touched)" class="alert alert-danger">
+      <div *ngIf="createMovieForm.controls['description'].hasError('required')">Descriptionis required</div>
+    </div>
+
+    <div class="form-group mb-3">
+      <input type="type" aria-label="type" class="form-control" placeholder="Gender" formControlName="type">
+    </div>
+
+    <!-- Validación -->
+    <div *ngIf="createMovieForm.controls['type'].invalid && (createMovieForm.controls['type'].dirty || createMovieForm.controls['type'].touched)" class="alert alert-danger">
+      <div *ngIf="createMovieForm.controls['type'].hasError('required')">Gender is required</div>
+    </div>
+
+    <div class="btn-update">
+      <button type="submit" class="btn btn-primary" (click)="createMovie()" [disabled]="createMovieForm.invalid">Add Movie</button>
+    </div>
+
+  </form>
+
+</section>
+

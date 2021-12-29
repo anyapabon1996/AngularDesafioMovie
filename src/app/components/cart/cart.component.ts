@@ -24,6 +24,7 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     //Le pasamos todas las pelis que tenemos guardadas, con la suscripcion
+    //Metodo get
     this.subscriptions = this.cartService.getFromCar().subscribe(movie => this.allMoviesInCar = movie);
   }
 
@@ -41,11 +42,14 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
 
   //Elimina un objeto particular
   deleteMovie(id : Number){
-    this.subscriptions?.add(this.cartService.deleteMovie(id).subscribe(m => this.allMoviesInCar = m));
+    this.cartService.deleteMovie(id).subscribe(remove => {
+      console.log(remove + ' has been removed');
+    })
   }
 
   //Elimnamos todo del carrito
-  removeAll() {
-    this.subscriptions?.add(this.cartService.clerCar().subscribe(m => this.allMoviesInCar = m));
-  }
+//   removeAll() {
+//     this.subscriptions?.add(this.cartService.clerCar().subscribe(m => this.allMoviesInCar = m));
+//   }
+// }
 }

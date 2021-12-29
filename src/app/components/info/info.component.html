@@ -1,10 +1,17 @@
-<section class="container-info">
+<mat-card class="card">
 
-  <div class="img-container">
-    <img [src]="movie.image" alt="..." style="width: 400px; ">
-  </div>
+  <mat-card-title-group>
 
-  <div class="summary-container">
-    <p>Summary into the mock as a field.</p>
-  </div>
-</section>
+    <mat-card-title>{{movie.title}}</mat-card-title>
+    <mat-card-subtitle>{{movie.premiere}}</mat-card-subtitle>
+    <img mat-card-xl-image [src]="movie.image" >
+
+  </mat-card-title-group>
+
+  <mat-card-content>
+    {{movie.description}}
+  </mat-card-content>
+
+</mat-card>
+
+

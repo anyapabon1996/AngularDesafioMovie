@@ -30,6 +30,12 @@ section{
 
     margin-bottom: 2rem;
 
+    .button-container{
+      display: flex;
+      justify-content: end;
+      margin: 0.5rem 0;
+    }
+
     .card-body{
       padding: none;
     }
@@ -58,7 +64,14 @@ section{
       margin-bottom: 1rem;
     }
   }
+}
 
-
+.edit{
+  form {
+    .btn-update{
+      display: flex;
+      justify-content: center;
+    }
+  }
 }
 

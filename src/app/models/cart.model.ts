@@ -1,5 +1,5 @@
 export interface ICart {
-  movieId: number,
+  id: number,
   title: string,
   image: string
 }

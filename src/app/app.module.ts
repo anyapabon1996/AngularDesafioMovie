@@ -9,7 +9,10 @@ import { MoviesComponent } from './components/movies/movies.component';
 import { InfoComponent } from './components/info/info.component';
 import { CartComponent } from './components/cart/cart.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MenuComponent } from './components/menu/menu.component'; //importamos libreria correspondiente
+import { MenuComponent } from './components/menu/menu.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; //importamos libreria correspondiente
+import { MaterialModule } from './material/material.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,10 @@ import { MenuComponent } from './components/menu/menu.component'; //importamos l
   imports: [
     BrowserModule,
     ReactiveFormsModule, //Vamos a trabajar con formulario reactivo
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MaterialModule, // aqui viene del export del material module
+    HttpClientModule, //Importamos el módulo de HTTP client, para los método get, put, post and delete
   ],
   providers: [],
   bootstrap: [AppComponent]

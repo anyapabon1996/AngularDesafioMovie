@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscriber, Subscription } from 'rxjs';
 import { ICart } from 'src/app/models/cart.model';
@@ -21,8 +21,9 @@ export class MoviesComponent implements OnInit, OnDestroy {
     //Inyectamos el servicio de router
     private router : Router,
 
+    //Inyectamos el servicio de CartService
     private cartService : CartService,
-    ) { }
+  ) { }
 
   //Suscripcion
   private subscription : Subscription | undefined;
@@ -30,13 +31,113 @@ export class MoviesComponent implements OnInit, OnDestroy {
   //Instanciamos un array para guardar todas las pelis del mock
   allMovie: IMovie[] = [];
 
+  //Instanciamos una peli vacía
+  updateOneMovie: IMovie | undefined = {
+    id: 0,
+    title: '',
+    premiere: 0,
+    image: '',
+    qualification: 0,
+    description: '',
+    type: ''
+  };
+
+  //Variable auxiliar de carro
+  movieCart: ICart = {
+    id : 0,
+    image : '',
+    title : ''
+  };
+
+  //Formulario d ectualizacion de pelicula
+  updateMovieForm = new FormGroup({
+    id: new FormControl('', [Validators.required]),
+    title: new FormControl(''),
+    premiere: new FormControl(''),
+    image: new FormControl(''),
+    qualification: new FormControl(''),
+    description: new FormControl(''),
+    type: new FormControl(''),
+  });
+
+  //Metodo para actualizar mi BB.DD
+  updateMovie() {
+
+    this.movieService.getMovieById(this.updateMovieForm.controls['id'].value).subscribe(data => {
+      console.log(data);
+
+      this.updateOneMovie = data;
+
+      if (this.updateOneMovie != undefined) {
+
+        this.updateOneMovie.id = this.updateMovieForm.controls['id'].value;
+
+        if (this.updateMovieForm.controls['description'].value != '') {
+          this.updateOneMovie.description = this.updateMovieForm.controls['description'].value;
+        }
+
+        if (this.updateMovieForm.controls['type'].value != '') {
+          this.updateOneMovie.type = this.updateMovieForm.controls['type'].value;
+        }
+
+        if (this.updateMovieForm.controls['image'].value != '') {
+          this.updateOneMovie.image = this.updateMovieForm.controls['image'].value;
+        }
+
+        if (this.updateMovieForm.controls['premiere'].value) {
+          this.updateOneMovie.premiere = this.updateMovieForm.controls['premiere'].value;
+        }
+
+        if (this.updateMovieForm.controls['title'].value != ''){
+          this.updateOneMovie.title = this.updateMovieForm.controls['title'].value;
+        }
+
+        if (this.updateMovieForm.controls['qualification'].value) {
+          this.updateOneMovie.qualification = this.updateMovieForm.controls['qualification'].value;
+        }
+
+        //LLama al servicio para realizar el método PUT
+        this.movieService.putUpdateMovie(this.updateOneMovie).subscribe(data => {
+          console.log(data,'Succsess update');
+          ;
+        })
+
+      }
+
+    })
+
+  }
+
+  //Formulario para crear pelicula
+  createMovieForm = new FormGroup({
+    // id: new FormControl('', [Validators.required]),
+    title: new FormControl('', [Validators.required]),
+    premiere: new FormControl('', [Validators.required]),
+    image: new FormControl('', [Validators.required]),
+    qualification: new FormControl('', [Validators.required]),
+    description: new FormControl('', [Validators.required]),
+    type: new FormControl('', [Validators.required]),
+  });
+
+
+  //Metodo para crear pelicula
+  createMovie() {
+    this.movieService.postMovie({ id: 0,
+      title: this.createMovieForm.controls['title'].value,
+      image: this.createMovieForm.controls['image'].value,
+      qualification: this.createMovieForm.controls['qualification'].value,
+      description: this.createMovieForm.controls['description'].value,
+      type: this.createMovieForm.controls['type'].value,
+      premiere: this.createMovieForm.controls['premiere'].value,
+    }).subscribe(data => {
+      console.log(`${data} has been add to our databases`)
+    });
+  }
+
   //formulario para buscar pelicula
   lookMovieForm = new FormGroup ({
     movieName : new FormControl('')
   })
-
-  //variable control
-  //flag :boolean = false;
 
   //Variable para buscar una pelicula
   movieName :string = '';
@@ -71,44 +172,38 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   }
 
-  index? :number = undefined;
-
   //Función para agregar al carrito.
   addToCart(id :number){
 
     //Esta función no sé cómo meterla dentro del subscription
     // this.subscription?.add(this.cartService.addMovie(id));
-
     //Así sí agarra
-    this.cartService.addMovie(id);
+    this.movieService.getMovieById(id).subscribe(data => {
 
-    // this.router.navigate(['cart', id]);
+      if (data != undefined){
 
-    // //Nos aseguramos que la peli no este ya agregada
-    // if (this.moviesInCart.length != 0) {
-    //   this.index = this.moviesInCart.findIndex(movieInto => movieInto.movieId == id);
-    // } else this.index = -1;
+        this.movieCart.image = data.image;
+        this.movieCart.title = data.title;
 
-    // if (this.index == -1) {
-    //   //Buscamos la peli en el array de pelis
-    //   this.index = this.allMovie.findIndex(movie =>
-    //     movie.id == id
-    //   );
+        this.cartService.addMovie(this.movieCart).subscribe(dataCart => {
+          console.log(dataCart);
+        });
+      }
 
-    //   if (this.index != -1) {
-    //     //Llamamos al servicio
-    //     this.movieService.addMoviestoCart(this.allMovie[this.index]).subscribe(moviesFromService => {
-    //       this.moviesInCart = moviesFromService;
-    //     });
+    });
 
-    //     //Le imprimimos por consola todas las peliculas que tiene
-    //     this.moviesInCart.forEach(movie => console.log(movie));
 
-    //     console.log(this.moviesInCart.length);
 
-    //     //si no se cumple la busqueda
-    //   } else console.log('Search Error');
+  }
 
-    // } else console.log('You already have rented this movie')
+  //Metodo DELETE
+  //Cómo tendrías que hacer para renderizar todo?
+  deleteMovie(id: Number) {
+    // this.subscription?.add(
+      this.movieService.deleteMovieById(id).subscribe(remove => {
+        console.log("Successfull delete", remove);
+    });
+    //);
+
   }
 }

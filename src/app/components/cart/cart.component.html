@@ -7,12 +7,17 @@
       <h5 class="card-title text-center">{{movie.title}}</h5>
     </div>
 
-    <button class="btn btn-primary btn-movie" (click)="deleteMovie(movie.movieId)">Remove</button>
+    <!-- Button to delete an specific movie from cart -->
+    <div class="button-container">
+      <button mat-fab color="primary" (click)="deleteMovie(movie.id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
 
   </div>
 
-  <div class="remove">
+  <!-- <div class="remove">
     <button class="btn btn-primary btn-remove" (click)="removeAll()">Remove all</button>
-  </div>
+  </div> -->
 
 </section>

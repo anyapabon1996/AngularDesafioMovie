@@ -1,7 +1,25 @@
 section {
 
+  margin-top: 1rem;
+
   .card{
     margin-bottom: 3rem;
+
+    .card-body{
+
+      .card-title{
+        font-size: large;
+        font-weight: bolder;
+      }
+    }
+
+    .button-container{
+
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
   }
 
   .remove{
@@ -15,5 +33,4 @@ section {
       justify-content: center;
     }
   }
-
 }
